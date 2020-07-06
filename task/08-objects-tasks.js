@@ -23,7 +23,12 @@
  *    console.log(r.getArea());   // => 200
  */
 function Rectangle(width, height) {
-    throw new Error('Not implemented');
+    this.width = width;
+    this.height = height;
+}
+
+Rectangle.prototype.getArea = function(){
+    return this.width * this.height;
 }
 
 
@@ -38,7 +43,7 @@ function Rectangle(width, height) {
  *    { width: 10, height : 20 } => '{"height":10,"width":20}'
  */
 function getJSON(obj) {
-    throw new Error('Not implemented');
+    return JSON.stringify(obj);
 }
 
 
@@ -54,7 +59,7 @@ function getJSON(obj) {
  *
  */
 function fromJSON(proto, json) {
-    throw new Error('Not implemented');
+    return Object.setPrototypeOf(JSON.parse(json), proto);
 }
 
 
@@ -106,34 +111,118 @@ function fromJSON(proto, json) {
  *  For more examples see unit tests.
  */
 
+class CssPath {
+    constructor() {
+        this._path = '';
+    }
+
+    element(v) {
+        if (this._element) {
+            throw new Error('Element, id and pseudo-element should not occur more then one time inside the selector');
+        }
+        this.checkPosition('element');
+        this._element = v;
+        this.addToPath(this._element);
+        return this;
+    }
+
+    id(v) {
+        if (this._id) {
+            throw new Error('Element, id and pseudo-element should not occur more then one time inside the selector');
+        }
+        this.checkPosition('id');
+        this._id = `#${v}`;
+        this.addToPath(this._id);
+        return this;
+    }
+
+    pseudoElement(v) {
+        if (this._pseudoElement) {
+            throw new Error('Element, id and pseudo-element should not occur more then one time inside the selector');
+        }
+        this.checkPosition('pseudoElement');
+        this._pseudoElement = `::${v}`;
+        this.addToPath(this._pseudoElement);
+        return this;
+    }
+
+    class(v) {
+        this.checkPosition('class');
+        this._class = `.${v}`;
+        this.addToPath(this._class);
+        return this;
+    }
+
+    attr(v) {
+        this.checkPosition('attr');
+        this._attr = `[${v}]`;
+        this.addToPath(this._attr);
+        return this;
+    }
+
+    pseudoClass(v) {
+        this.checkPosition('pseudoClass');
+        this._pseudoClass = `:${v}`;
+        this.addToPath(this._pseudoClass);
+        return this;
+    }
+
+    checkPosition(v) {
+        const order = ['element', 'id', 'class', 'attr', 'pseudoClass', 'pseudoElement'];
+        if (order.slice(order.findIndex(el => el === v) + 1).some(el => this[`_${el}`])) {
+            throw new Error('Selector parts should be arranged in the following order: element, id, class, attribute, pseudo-class, pseudo-element');
+        }
+    }
+
+    addToPath(v) {
+        this._path += v;
+    }
+
+    stringify() {
+        return this._path;
+    }
+}
+
+class CssCombinedPath {
+    constructor(firstSelector, combinator, secondSelector) {
+        this.firstSelector = firstSelector;
+        this.combinator = combinator;
+        this.secondSelector = secondSelector;
+    }
+
+    stringify() {
+        return `${this.firstSelector.stringify()} ${this.combinator} ${this.secondSelector.stringify()}`;
+    }
+}
+
 const cssSelectorBuilder = {
 
     element: function(value) {
-        throw new Error('Not implemented');
+        return new CssPath().element(value);
     },
 
     id: function(value) {
-        throw new Error('Not implemented');
+        return new CssPath().id(value);
     },
 
     class: function(value) {
-        throw new Error('Not implemented');
+        return new CssPath().class(value);
     },
 
     attr: function(value) {
-        throw new Error('Not implemented');
+        return new CssPath().attr(value);
     },
 
     pseudoClass: function(value) {
-        throw new Error('Not implemented');
+        return new CssPath().pseudoClass(value);
     },
 
     pseudoElement: function(value) {
-        throw new Error('Not implemented');
+        return new CssPath().pseudoElement(value);
     },
 
     combine: function(selector1, combinator, selector2) {
-        throw new Error('Not implemented');
+        return new CssCombinedPath(selector1, combinator, selector2);
     },
 };
 
