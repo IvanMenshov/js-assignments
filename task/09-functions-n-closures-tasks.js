@@ -64,8 +64,8 @@ function getPowerFunction(exponent) {
  *   getPolynom(8)     => y = 8
  *   getPolynom()      => null
  */
-function getPolynom(...arguments) {
-    return (x) => arguments.reduce((a, curr, index, arr) => a + (curr * Math.pow(x, arr.length - 1 - index)), 0);
+function getPolynom() {
+    return (x) => [...arguments].reverse().reduce((y, el, i) => y += el * x ** i);
 }
 
 
@@ -84,17 +84,14 @@ function getPolynom(...arguments) {
  *   memoizer() => the same random number  (next run, returns the previous cached result)
  */
 function memoize(func) {
-    let cashe = {};
+    let cache = {};
 
-    return(...arguments) => {
-        const key = `${func.name}(${arguments})`;
-
-        if(!cashe[key]){
-            cashe[key] = func(arguments);
+    return n => {
+        if (n in cache) {
+            return cache[n];
         }
-
-        return cashe[key];
-    }
+        return cache[n] = func(n);
+    };
 }
 
 
@@ -154,10 +151,10 @@ function retry(func, attempts) {
  *
  */
 function logger(func, logFunc) {
-    return (...arguments) => {
-        logFunc(`${func.name}(${JSON.stringify(arguments).slice(1, -1)}) starts`);
-        const result = func(...arguments);
-        logFunc(`${func.name}(${JSON.stringify(arguments).slice(1, -1)}) ends`);
+    return (...args) => {
+        logFunc(`${func.name}(${args.map(arg => JSON.stringify(arg))}) starts`);
+        const result = func(...args);
+        logFunc(`${func.name}(${args.map(arg => JSON.stringify(arg))}) ends`);
 
         return result;
     }
@@ -177,8 +174,8 @@ function logger(func, logFunc) {
  *   partialUsingArguments(fn, 'a','b','c')('d') => 'abcd'
  *   partialUsingArguments(fn, 'a','b','c','d')() => 'abcd'
  */
-function partialUsingArguments(fn, ...arguments) {
-    return fn.bind(this, ...arguments);
+function partialUsingArguments(fn, ...args) {
+    return fn.bind(this, ...args);
 }
 
 
