@@ -26,7 +26,7 @@
  *
  */
 function getComposition(f,g) {
-    return (x) => f(g(x));
+    throw new Error('Not implemented');
 }
 
 
@@ -47,7 +47,7 @@ function getComposition(f,g) {
  *
  */
 function getPowerFunction(exponent) {
-    return (x) => Math.pow(x, exponent);
+    throw new Error('Not implemented');
 }
 
 
@@ -92,6 +92,7 @@ function memoize(func) {
         }
         return cache[n] = func(n);
     };
+
 }
 
 
@@ -111,19 +112,7 @@ function memoize(func) {
  * retryer() => 2
  */
 function retry(func, attempts) {
-    return () => {
-
-        while(true){
-            try {
-                return func();
-            } catch (error) {
-                
-                if(--attempts < 0){
-                    return func();
-                }
-            }
-        }
-    }
+    throw new Error('Not implemented');
 }
 
 
@@ -174,6 +163,7 @@ function logger(func, logFunc) {
  *   partialUsingArguments(fn, 'a','b','c')('d') => 'abcd'
  *   partialUsingArguments(fn, 'a','b','c','d')() => 'abcd'
  */
+
 function partialUsingArguments(fn, ...args) {
     return fn.bind(this, ...args);
 }
@@ -196,8 +186,7 @@ function partialUsingArguments(fn, ...args) {
  *   getId10() => 11
  */
 function getIdGeneratorFunction(startFrom) {
-    let id = startFrom;
-    return () => id++;
+    throw new Error('Not implemented');
 }
 
 
