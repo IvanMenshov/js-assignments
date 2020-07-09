@@ -26,7 +26,7 @@
  *
  */
 function getComposition(f,g) {
-    throw new Error('Not implemented');
+    return (x) => f(g(x));
 }
 
 
@@ -47,7 +47,8 @@ function getComposition(f,g) {
  *
  */
 function getPowerFunction(exponent) {
-    throw new Error('Not implemented');
+    return (x) => Math.pow(x, exponent);
+
 }
 
 
@@ -112,7 +113,19 @@ function memoize(func) {
  * retryer() => 2
  */
 function retry(func, attempts) {
-    throw new Error('Not implemented');
+    return () => {
+
+        while(true){
+            try {
+                return func();
+            } catch (error) {
+                
+                if(--attempts < 0){
+                    return func();
+                }
+            }
+        }
+    }
 }
 
 
@@ -186,7 +199,8 @@ function partialUsingArguments(fn, ...args) {
  *   getId10() => 11
  */
 function getIdGeneratorFunction(startFrom) {
-    throw new Error('Not implemented');
+    let id = startFrom;
+    return () => id++;
 }
 
 
