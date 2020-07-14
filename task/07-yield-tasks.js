@@ -1,4 +1,3 @@
-debugger;
 'use strict';
 
 /********************************************************************************************
@@ -173,30 +172,27 @@ function* breadthTraversalTree(root) {
 function* mergeSortedSequences(source1, source2) {
     var first = source1();
     var second = source2();
-    var a = first.next();
-    var b = second.next();
+    var a = first.next().value;
+    var b = second.next().value;
 
-    while(true){
+    while((a != undefined) && (b != undefined)){
 
-        if(a.done){
-            yield b.value;
-            b = second.next();
+        if (a < b) {
+            yield a;
+            a = first.next().value;
+        } else {
+            yield b;
+            b = second.next().value;
         }
-        else if(b.done){
-            yield a.value;
-            a = first.next();
-        }
-        else{
+    }
 
-            if(a.value < b.value){
-                yield a.value;
-                a = first.next();
-            }
-            else{
-                yield b.value;
-                b = second.next();
-            }
-        }
+    while (a != undefined) {
+        yield a;
+        a = first.next().value;
+    }
+    while (b != undefined) {
+        yield b;
+        b = second.next().value;
     }
 }
 
