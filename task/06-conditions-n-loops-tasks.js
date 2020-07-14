@@ -1,4 +1,3 @@
-debugger;
 'use strict';
 
 /**************************************************************************************************
@@ -107,12 +106,7 @@ function getSumBetweenNumbers(n1, n2) {
  *   10,10,10 =>  true
  */
 function isTriangle(a,b,c) {
-    if((a + b > c) && (b + c > a) && (a + c > b)){
-        return true;
-    }
-    else{
-        return false;
-    }
+    return a + b > c && a + c > b && b + c > a;
 }
 
 
@@ -375,7 +369,7 @@ function getDigitalRoot(num) {
  *   '{[(<{[]}>)]}' = true 
  */
 function isBracketsBalanced(str) {
-    while(true) {
+    while(str != null) {
         let s = str.replace(/<>|\(\)|\[]|{}/, '');
 
         if(s === str){
@@ -451,9 +445,8 @@ function timespanToHumanString(startDate, endDate) {
     else if (days <= 545) {
         return 'a year ago';
     } 
-    else {
-        return new String(Math.round(days / 360)).concat(' years ago');
-    }
+
+    return new String(Math.round(days / 360)).concat(' years ago');
 }
 
 
