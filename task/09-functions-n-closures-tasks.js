@@ -86,6 +86,7 @@ function getPolynom() {
 function memoize(func) {
     let res = func();
     return () => res;
+
 }
 
 
@@ -105,6 +106,7 @@ function memoize(func) {
  * retryer() => 2
  */
 function retry(func, attempts) {
+
     return function(){
 
         for (let i =0; i< attempts; i++){
@@ -115,6 +117,7 @@ function retry(func, attempts) {
         }
         
         return func();
+
     }
 }
 
@@ -166,10 +169,12 @@ function logger(func, logFunc) {
  *   partialUsingArguments(fn, 'a','b','c')('d') => 'abcd'
  *   partialUsingArguments(fn, 'a','b','c','d')() => 'abcd'
  */
+
 function partialUsingArguments(fn) {
     let firstFuncValues = (Array.from(arguments)).slice(1);
     
     return fn.bind(null, ...firstFuncValues);
+
 }
 
 
